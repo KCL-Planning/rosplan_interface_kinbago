@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(rosplan_interface_kinbago)
+project(rosplan_interface_changemap)
 
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
@@ -9,9 +9,16 @@ find_package(catkin REQUIRED COMPONENTS
   std_srvs
   diagnostic_msgs
   geometry_msgs
+  move_base_msgs
   rosplan_dispatch_msgs
   rosplan_knowledge_msgs
+  rosplan_planning_system
   actionlib
+  mongodb_store
+)
+
+find_package(Boost REQUIRED COMPONENTS
+  filesystem
 )
 
 ###################################
@@ -21,7 +28,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Declare things to be passed to dependent projects
 catkin_package(
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp rospy std_msgs std_srvs diagnostic_msgs geometry_msgs rosplan_dispatch_msgs rosplan_knowledge_msgs actionlib
+  CATKIN_DEPENDS roscpp rospy std_msgs std_srvs actionlib rosplan_dispatch_msgs rosplan_knowledge_msgs mongodb_store diagnostic_msgs rosplan_planning_system
   DEPENDS
 )
 
@@ -36,8 +43,8 @@ include_directories(
 )
 
 ## Declare cpp executables
-add_executable(rpbidder src/RPLocaliser.cpp)
-add_dependencies(rpbidder ${catkin_EXPORTED_TARGETS})
+add_executable(rpchangemap src/RPChangeMap.cpp)
+add_dependencies(rpchangemap ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries against which to link a library or executable target
-target_link_libraries(rpbidder ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(rpchangemap ${catkin_LIBRARIES} ${Boost_LIBRARIES})
